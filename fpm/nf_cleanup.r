@@ -20,16 +20,16 @@ setAs("character", "myPosixCt", function(from) as.POSIXct(from, format = "%Y/%m/
 options(set.seconds="6")
 
 # Read in the .binetflow file and convert corresponding vectors to listed data types
-flowdata = read.csv(args[1], colClasses = c("myPosixCt", "numeric", "factor", "factor","factor","factor","factor","factor","factor","factor","factor","numeric", "numeric", "numeric", "factor"), strip.white = TRUE, sep = ',')
+flowdata_csv = read.csv(args[1], colClasses = c("myPosixCt", "numeric", "factor", "factor","factor","factor","factor","factor","factor","factor","factor","numeric", "numeric", "numeric", "factor"), strip.white = TRUE, sep = ',')
 
 # Var containing vectors that we would like dropped from the data
-drops <- c("X", "StartTime", "Dur", "Dir", "State", "sTos", "dTos", "Label")
+#drops <- c("StartTime", "Dur", "Dir", "State", "sTos", "dTos", "Label")
 
 # Drop the corresponding vectors from the data frame
-flowdata <- flowdata[,!(names(flowdata) %in% drops)]
+flowdata_csv <- flowdata_csv[,!(names(flowdata_csv) %in% drops)]
 
 #Write out the resulting data frame to a CSV file
-write.csv(flowdata, file="flowdata.csv")
+write.csv(flowdata_csv, file="flowdata.csv")
 
 # Stop script
 stop(message("File converted!"))
