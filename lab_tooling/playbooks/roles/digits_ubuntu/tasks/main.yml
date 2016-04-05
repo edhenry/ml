@@ -96,5 +96,12 @@
 -	name: Unpack and copy cuDNN files
 	command: sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
 
+-	name: Clone tensorflow repo
+	git: repo=https://github.com/tensorflow/tensorflow.git dest=/tmp/checkout
+
+-	name: Install JDK 8
+	apt: name=oracle-java8-installer state=latest
+
+
 
 
