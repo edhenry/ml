@@ -1,0 +1,100 @@
+---
+
+# Download NVIDIA Docker image according to NVIDIA Docs
+-	name: Change dir to /tmp
+	command: cd /tmp
+
+-	name: Download NVIDIA Docker Image
+	get_url: url=https://github.com/NVIDIA/nvidia-docker/releases/download/v1.0.0-beta.3/nvidia-docker_1.0.0.beta.3_amd64.tar.xz
+
+-	name: Untar contents
+	command: sudo tar --strip-components=1 -C /usr/bin -xvf /tmp/nvidia-docker_1.0.0.beta.3_amd64.tar.xz
+
+-	name: Clean up
+	command: rm /tmp/nvidia-docker*.tar.xz
+
+# Download / Install NVIDIA Cuda Environment
+
+-	name: Install kernel sources
+	yum: name=kernel-devel state=latest
+	tag: cuda
+
+-	name: Change dir to /tmp
+	command: cd /tmp
+
+-	name: Download CUDA toolkit
+	get_url: url=http://developer.download.nvidia.com/compute/cuda/4_0/toolkit/cudatoolkit_4.0.17_linux_64_rhel6.0.run
+
+-	name: chmod
+	command: chmod a+x /tmp/cudatoolkit*
+
+-	name: More prep...
+	command: /tmp/cudatoolkit* --noexec --target /tmp/cudatoolkit
+
+-	name: mkdir
+	command: mkdir -v /usr/local/cuda
+
+-	name: Clean up
+	command: rm -rf /tmp/cudatoolkit*
+
+# Configure the CUDA toolkit
+
+-	name: Echo config files
+	command: echo -e "/usr/local/cuda/lib64\n/usr/local/cuda/lib" > /etc/ld.so.conf.d/cuda.conf
+
+-	name: Echo path vars
+	command: echo "export PATH=/usr/local/cuda/bin:$PATH" > /etc/profile.d/cuda.sh
+
+-	name: Change dir
+	command: /sbin/ldconfig
+
+# Install TensowFlow with CPU Support (Ubuntu)
+
+-	name: Install python-pip
+	apt:  name=python-pip state=latest
+	when: ansible_os_family == "Ubuntu"
+
+-	name: Install python-dev
+	apt: name=python-dev state=latest
+	when: ansible_os_family == "Ubuntu"
+
+-	name: Install TensorFlow
+	command: sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.7.1-cp27-none-linux_x86_64.whl
+	when: ansible_os_family == "Ubuntu"
+	tags: CPU
+
+# Install TensorFlow with GPU Support
+
+-	name: Pull CUDA .deb
+	get_url: url=http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/cuda-repo-ubuntu1404_7.5-18_amd64.deb
+
+-	name: Add CUDA repo	
+	command: sudo dpkg -i cuda-repo-ubuntu1404_7.5-18_amd64.deb
+	when: ansible_os_family == "Ubuntu"
+	tags: GPU
+
+-	name: Update apt cache
+	apt: update_cache=yes
+	when: ansible_os_family == "Ubuntu"
+
+-	name: Install CUDA
+	apt: name=cuda state=latest
+	when: ansible_os_family == "Ubuntu"
+
+# Install cuDNN
+# Please download the cuDNN zip from https://developer.nvidia.com/cudnn
+
+-	name: Unpack and copy cuDNN files
+	command: tar xvzf cudnn-6.5-linux-x64-v2.tgz
+
+-	name: Unpack and copy cuDNN files
+	command: sudo cp cudnn-6.5-linux-x64-v2/cudnn.h /usr/local/cuda/include
+
+-	name: Unpack and copy cuDNN files
+	command: sudo cp cudnn-6.5-linux-x64-v2/libcudnn* /usr/local/cuda/lib64
+
+-	name: Unpack and copy cuDNN files
+	command: sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
+
+
+
