@@ -78,6 +78,7 @@ ENV CLASSPATH /usr/local/hadoop/etc/hadoop:/usr/local/hadoop/share/hadoop/common
 RUN pip install \
 		--upgrade pandas \
 		--upgrade six \
+		seaborn \
 		futures \
 		appdirs \
 		packaging \
