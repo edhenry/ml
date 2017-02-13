@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 #Dockerfile originally borrowed and modified from https://github.com/saiprashanths/dl-docker
 
-MAINTAINER Ed Henry <ehenry@brocade.com>
+MAINTAINER Ed Henry <edward.m.henry@gmail.com>
 
 ARG TENSORFLOW_VERSION=0.11.0
 ARG TENSORFLOW_ARCH=cpu
