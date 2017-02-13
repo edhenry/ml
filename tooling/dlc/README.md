@@ -28,11 +28,11 @@ This image has the following dependencies installed :
 
 To start the jupyter notebook server when instantiating a container from this image, issue the following command :
 
-```docker run networkn3rd/pdlc:<tag> /bin/sh -c "ipython notebook --ip 0.0.0.0"```
+```docker run edhenry/dlc:<tag> /bin/sh -c "ipython notebook --ip 0.0.0.0"```
 
 #### Start Jupyter - GPU Image (nvidia environment)
 
-```nvidia-docker run networkn3rd/pdlc:<tag> /bin/sh -c "ipython notebook --ip 0.0.0.0"```
+```nvidia-docker run edhenry/dlc:<tag> /bin/sh -c "ipython notebook --ip 0.0.0.0"```
 
 #### Quick How-To for utilizing the native TensorFlow HDFS support 
 
