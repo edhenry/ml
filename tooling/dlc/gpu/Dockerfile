@@ -84,7 +84,8 @@ RUN pip install \
 		packaging \
 		pyopenssl \
 		ndg-httpsclient \
-		pyasn1
+		pyasn1 \
+		functional
 
 # Install useful Python packages using apt-get to avoid version incompatibilities with Tensorflow binary
 # especially numpy, scipy, skimage and sklearn (see https://github.com/tensorflow/tensorflow/issues/2034)
