@@ -1,0 +1,16 @@
+
+learning-to-communicate/data/processed/test\.pt
+
+learning-to-communicate/data/processed/training\.pt
+
+learning-to-communicate/data/raw/t10k-images-idx3-ubyte
+
+learning-to-communicate/data/raw/t10k-labels-idx1-ubyte
+
+learning-to-communicate/data/raw/train-images-idx3-ubyte
+
+learning-to-communicate/data/raw/train-labels-idx1-ubyte
+
+\.vscode/launch\.json
+
+\.vscode/settings\.json
