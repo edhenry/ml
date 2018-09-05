@@ -14,3 +14,5 @@ learning-to-communicate/data/raw/train-labels-idx1-ubyte
 \.vscode/launch\.json
 
 \.vscode/settings\.json
+
+classification/chexnet/chexnet-data/

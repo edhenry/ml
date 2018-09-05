@@ -47,7 +47,7 @@ def get_default_parser():
     parser.add_argument('--learning-rate', type=float, default=0.0001,
                         help="Learning rate for model training (default: 0.0001)")
     parser.add_argument('--num-episodes', type=float, default=1e+6,
-                        help='Number of episodes (default 1e+6')
+                        help='Number of episodes (default: 1e+6')
     parser.add_argument('--num-steps', type=int, default=10,
                         help="Number of steps (default: 10)")
     parser.add_argument('--step', type=int, default=10,
