@@ -1,0 +1,5 @@
+---
+
+- name: Start Kafka service
+  docker_service:
+    project_src:
