@@ -24,10 +24,8 @@ class_names = [
     "Edema", "Emphysema", "Fibrosis", 
     "Pleural_Thickening", "Hernia"
 ]
-data_dir = Path('C:/Users/Ed Henry/Documents/code/ml/classification/chexnet/chexnet-data/images/')
-data_dir = PureWindowsPath(data_dir)
-test_image_list = Path('C:/Users/Ed Henry/Documents/code/ml/classification/chexnet/test_list.txt')
-test_image_list = PureWindowsPath(test_image_list)
+data_dir = '/mnt/md0/datasets/chexnet-data/images'
+test_image_list = '/mnt/md0/datasets/chexnet-data/test_list.txt'
 batch_size = 64
 
 def main():
@@ -46,7 +44,6 @@ def main():
     else:
         print("No existing model checkpoint found.")
 
-    print(test_image_list)
     # Normalization according to original paper section 3.1
     # "normalize based on the mean and stddev of images in the ImageNet dataset"
     # reference imagenet.lua module from torch found here :
@@ -63,7 +60,7 @@ def main():
                                  ]))
 
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False,
-                             num_workers=8, pin_memory=True)
+                             num_workers=1, pin_memory=True)
 
     ground_truth = torch.FloatTensor()
     ground_truth = ground_truth.cuda()
@@ -72,7 +69,7 @@ def main():
 
     model.eval()
 
-    print(test_loader)
+    print(test_loader.dataset.image_names)
 
     for i, (inp, target) in enumerate(test_loader):
         target = target.cuda()

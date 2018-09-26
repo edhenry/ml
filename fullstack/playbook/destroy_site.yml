@@ -1,0 +1,9 @@
+---
+
+- name: Stop & Destroy Data Cluster
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks: 
+    - include: roles/kafka/tasks/destroy.yml
+    - include: roles/nifi/tasks/destroy.yml

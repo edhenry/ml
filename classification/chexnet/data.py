@@ -28,7 +28,8 @@ class ChestXRayData(Dataset):
                 label = items[1:]
                 label = [int(i) for i in label]
                 image_name = os.path.join(data_directory, image_name)
-                image_names.append(label)
+                image_names.append(image_name)
+                labels.append(label)
 
         self.image_names = image_names
         self.labels = labels

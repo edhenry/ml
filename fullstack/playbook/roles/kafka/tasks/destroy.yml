@@ -1,0 +1,10 @@
+---
+
+- name: Destroy Kafka service
+  docker_service:
+    project_src: roles/kafka
+    build: no
+    state: absent
+    scale:
+      kafka: 3
+  register: kafka
