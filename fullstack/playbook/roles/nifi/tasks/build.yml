@@ -1,0 +1,14 @@
+---
+
+- name: Start NiFi service
+  docker_service:
+    project_src: roles/nifi
+    build: no
+    state: present
+
+# TODO: Implement post to NiFi API to get around manual upload
+# - name: Push Kafka Template
+#   uri:
+#     url: http://nifi-host:nifi-port/nifi-api/controller/templates
+#     method: POST
+#     body: "template=@my_nifi_template.xml"

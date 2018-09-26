@@ -1,0 +1,10 @@
+---
+
+- name: Startup Data Cluster
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - include: roles/kafka/tasks/build.yml
+    - include: roles/nifi/tasks/build.yml
+    
