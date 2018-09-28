@@ -1,6 +1,6 @@
 ---
 
-- name: Start Kafka service
+- name: Start Airflow service
   docker_service:
     project_src: roles/airflow
     build: no
