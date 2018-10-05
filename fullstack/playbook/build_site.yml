@@ -8,4 +8,5 @@
     - include: roles/kafka/tasks/build.yml
     - include: roles/nifi/tasks/build.yml
     - include: roles/airflow/tasks/build.yml
+    - include: roles/webapp/tasks/build.yml
     

@@ -13,9 +13,11 @@ class AugmentedImageSequence(Sequence):
         Sequence {[type]} -- [description]
     """
 
-    def __init__(self, dataset_csv_file: str, class_names: list, source_image_dir: str, batch_size=16,
-                 target_size=(224, 224), augmenter=None, verbose=0, steps=None,
-                 shuffle_on_epoch_end=True, random_state=1):
+    def __init__(
+                self, dataset_csv_file: str, class_names: list, source_image_dir: str,
+                batch_size=16, target_size=(224, 224), augmenter=None,
+                verbose=0, steps=None, shuffle_on_epoch_end=True, random_state=1
+                ):
                  """                 
                  Arguments:
                      dataset_csv_file {str} -- Path of dataset CSV (assuming CSV here)
@@ -27,7 +29,7 @@ class AugmentedImageSequence(Sequence):
                      target_size {tuple} -- [description] (default: {(224, 224)})
                      augmenter {imgaug} -- [description] (default: {None})
                      verbose {int} -- [description] (default: {0})
-                     steps {[type]} -- [description] (default: {None})
+                     steps {int or str} -- [description] (default: {None})
                      shuffle_on_epoch_end {bool} -- [description] (default: {True})
                      random_state {int} -- [description] (default: {1})
                  """

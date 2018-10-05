@@ -141,6 +141,17 @@ class MultiGPUModelCheckpoint(Callback):
                 self.best = np.Inf
     
     def on_end_epoch(self, epoch, logs=None):
+        """
+        Method containing callbacks for saving model parameters and other functionality
+        that one would like to perform at the end of a given training epoch.
+        
+        Arguments:
+            epoch {[type]} -- [description]
+        
+        Keyword Arguments:
+            logs {[type]} -- [description] (default: {None})
+        """
+
         logs = logs or {}
         self.epochs_since_last_save += 1
         if self.epochs_since_last_save >= self.period:
