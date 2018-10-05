@@ -62,6 +62,6 @@ def main():
     utility.backup_config_file(output_directory, config_file)
 
     train_counts, train_pos_counts = utility.get_sample_counts(output_directory, "train", class_names)
-    validation_counts, _ = get_sample_counts(output_directory, "validation", class_names)
+    validation_counts, _ = utility.get_sample_counts(output_directory, "validation", class_names)
 
     # TODO Compute steps
