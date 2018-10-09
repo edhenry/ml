@@ -5,7 +5,7 @@
   connection: local
   gather_facts: no
   tasks: 
-    - include: roles/kafka/tasks/destroy.yml
     - include: roles/nifi/tasks/destroy.yml
     - include: roles/airflow/tasks/destroy.yml
     - include: roles/webapp/tasks/destroy.yml
+    - include: roles/kafka/tasks/destroy.yml

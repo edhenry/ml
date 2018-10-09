@@ -34,6 +34,7 @@ def main():
     use_base_model_weights = cp["TRAIN"].getboolean("use_base_model_weights")
     use_trained_model_weights = cp["TRAIN"].getboolean("use_trained_model_weights")
     use_best_weights = cp["TRAIN"].getboolean("use_best_weights")
+    output_weights_name = cp["TRAIN"].get("output_weights_name")
     epochs = cp["TRAIN"].getint("epochs")
     batch_size = cp["TRAIN"].getint("batch_size")
     initial_learning_rate = cp["TRAIN"].getfloat("initial_learning_rate")
@@ -64,4 +65,82 @@ def main():
     train_counts, train_pos_counts = utility.get_sample_counts(output_directory, "train", class_names)
     validation_counts, _ = utility.get_sample_counts(output_directory, "validation", class_names)
 
-    # TODO Compute steps
+    # compute steps
+
+    # train steps var defined in config ini file
+    # if set to standard auto, normalize train_steps
+    # wrt batch_size, otherwise take user input
+    if train_steps == "auto":
+        train_steps = int(train_counts / batch_size)
+    else:
+        try:
+            train_steps = int(train_steps)
+        except:
+            ValueError:
+                raise ValueError(f"""
+                train_steps : {train_steps} is invalid,
+                please use 'auto' or specify an integer.
+                """)
+        print(f" <<< train_steps : {train_steps} >>>")
+
+        if validation_steps == "auto":
+            validation_steps = int(validation_counts / batch_size)
+        else:
+            try:
+                validation_steps = int(validation_steps)
+            except:
+                ValueError:
+                    raise ValueError(f"""
+                    validation_steps : {validation_steps} is invalid,
+                    please use 'auto' or specify an integer.
+                    """)
+        print(f" <<< validation_steps : {validation_steps} >>>")
+
+        # class weights
+        class_weights = utility.get_class_weights(
+            train_counts,
+            train_pos_counts,
+            multiply=positive_weights_multiply,
+        )
+        print(f"class_weights : {class_weights}")
+
+        print(" <<< Loading Model >>>")
+        if use_trained_model_weights:
+            if use_best_weights:
+                model_weights_file = os.path.join(output_directory, f"best_{output_weights_name}")
+            else:
+                model_weights_file = os.path.join(output_directory, output_weights_name)
+        else:
+            model_weights_file = None
+        
+        model_factory = ModelFactory()
+        model = model_factory.get_model(
+            class_names=class_names,
+            use_base_weights=use_base_model_weights,
+            weights_path=model_weights_file,
+            intput_shape=(image_dimension,image_dimension,3)
+        )
+
+        if show_model_summary:
+            print(model.summary())
+        
+        print(" <<< Creating Image Generators >>> ")
+        train_sequence = AugmentedImageSequence(
+            dataset_csv_dir=os.path.join(output_directory, "train.csv"),
+            class_names=class_names,
+            source_image_dir=image_source_directory,
+            batch_size=batch_size,
+            target_size=(image_dimension, image_dimension),
+            augmenter=augmenter,
+            steps=train_steps,
+        )
+        
+        validation_sequence = AugmentedImageSequence(
+            dataset_csv_dir=os.path.join(output_directory, "validation.csv"),
+            class_names=class_names,
+            source_image_dir=image_source_directory,
+            batch_size=batch_size,
+            target_size=(image_dimension, image_dimension)
+        )
+            
+            
