@@ -8,5 +8,3 @@
     scale:
       kafka: 3
   register: kafka
-
-- debug: var=kafka

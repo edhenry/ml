@@ -140,7 +140,45 @@ def main():
             class_names=class_names,
             source_image_dir=image_source_directory,
             batch_size=batch_size,
-            target_size=(image_dimension, image_dimension)
+            target_size=(image_dimension, image_dimension),
+            augmenter=augmenter,
+            steps=validation_steps,
+            shuffle_on_epoch_end=False,
         )
-            
-            
+
+        output_weights_path = os.path.join(output_directory, output_weights_name)
+        print(f" <<< Set Output Weights Path to : {output_weights_path}")
+
+        # TODO implement multi-gpu support
+
+        model_train = model
+        checkpoint = ModelCheckpoint(
+            output_weights_path,
+            save_weights_only=True,
+            save_best_only=True,
+            verbose=1
+        )
+
+        print(" <<< Compile model and class weights >>>")
+        optimizer = Adam(lr=initial_learning_rate)
+        model_train.compile(
+            optimizer=optimizer, loss="binary_crossentropy"
+        )
+
+        auroc = MultiClassAUROC(
+            sequence=validation_sequence,
+            class_names=class_names,
+            weights_path=output_weights_path,
+            stats=training_stats,
+            workers=generator_workers,
+        )
+
+        callbacks =[
+            checkpoint,
+            TensorBoard(log_dir=os.path.join(output_directory, "logs"), batch_size=batch_size),
+            ReduceLROnPlateau(monitor='validation_loss', factor=0.1, patience=patience_reduce_lr,
+                              verbose=1, mode="min", min_lr=min_lr),
+            auroc
+        ]
+
+        # TODO Implement training loop (l00ps br0ther)    
