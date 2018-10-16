@@ -1,7 +1,0 @@
----
-
-- name: Remove x-Ray Web service
-  docker_service:
-    project_src: roles/webapp
-    build: no
-    state: absent

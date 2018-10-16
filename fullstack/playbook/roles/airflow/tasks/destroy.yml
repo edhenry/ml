@@ -1,8 +1,0 @@
----
-
-- name: Destroy Airflow service
-  docker_service:
-    project_src: roles/airflow
-    build: no
-    state: absent
-  register: airflow
