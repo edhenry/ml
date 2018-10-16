@@ -15,7 +15,7 @@ def get_sample_counts(output_directory: str, datasets: str, class_names: list):
         class_names {list of str} -- target classes 
     """
 
-    df = pd.read_csv(os.path.join(output_directory, f"{dataset}.csv"))
+    df = pd.read_csv(os.path.join(output_directory, f"{datasets}.csv"))
     total_count = df.shape[0]
     labels = df[class_names].as_matrix()
     positive_counts = np.sum(labels, axis=0)
@@ -41,9 +41,11 @@ def get_class_weights(total_counts: int, class_positive_counts: dict, multiply: 
     
     class_names = list(class_positive_counts.keys())
     label_counts = np.array(list(class_positive_counts.values()))
-    class_weight = []
+    class_weights = []
     for i, class_name in enumerate(class_names):
-        class_weight.append(get_single_class_weight(label_counts[i], total_counts))
+        class_weights.append(get_single_class_weight(label_counts[i], total_counts))
+
+    return class_weights
 
 
 def augmenter():
@@ -77,7 +79,31 @@ def check_create_output_dir(output_directory: str):
     if os.path.isfile(running_flag_file):
         raise RuntimeError("There is a process currently utilizing this directory!")
     else:
-        open(running_flag_file, "a").close()
+        create_training_lock(output_directory)
+        return True
+    return False
+
+def create_training_lock(output_directory: str):
+    """
+    Create training lock for the directory where an experiment is potentially running
+    
+    Arguments:
+        output_directory {str} -- directory where experiment is currently executing
+    """
+    running_flag_file = os.path.join(output_directory, ".training.lock")
+    open(running_flag_file, "a").close()
+    
+
+def delete_training_lock(output_directory: str):
+    """
+    Remove a potential .training.lock file on a directly where an experiment is/has been run
+    
+    Arguments:
+        output_directory {str} -- directory where an experiment has or is running
+    """
+    running_flag_file = os.path.join(output_directory, ".training.lock")
+    return os.remove(running_flag_file)
+
 
 def backup_config_file(output_directory: str, config_file: str):
     """
@@ -93,8 +119,7 @@ def backup_config_file(output_directory: str, config_file: str):
         print(f"Backing up configuration file to {output_directory}")
         shutil.copy(config_file, os.path.join(output_directory, os.path.split(config_file)[1]))
     except:
-        raise RuntimeError("Unable to save experiment configuration file! Please \n
-                            remedy this problem before proceeding.")
+        raise RuntimeError("Unable to save experiment configuration file! Please remedy this problem before proceeding.")
 
 def build_datasets(dataset_csv_dir: str, output_directory: str):
     """

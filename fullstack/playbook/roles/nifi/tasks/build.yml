@@ -19,14 +19,14 @@
 # - name: Upload Kafka File Pipeline
 #   shell: curl -iv -F template=@{{ kafka_file_template }} -X POST http://{{ ansible_facts['nifi']['nifi_nifi_1']['networks']['kafka_data-stack-net']['IPAddress'] }}:8080/nifi-api/process-groups/{{ pg['content'] }}/templates/upload
 
-- name: Post the Kafka Template to the NiFi API
-  uri:
-    url: http://{{ ansible_facts['nifi']['nifi_nifi_1']['networks']['kafka_data-stack-net']['IPAddress'] }}:8080/nifi-api/process-groups/{{ pg['content'] }}/templates/upload
-    method: POST
-    body_format: raw
-    headers:
-      "Content-Type": application/x-www-form-urlencoded
-    src: Kafka_File_Pipe.xml
+# - name: Post the Kafka Template to the NiFi API
+#   uri:
+#     url: http://{{ ansible_facts['nifi']['nifi_nifi_1']['networks']['kafka_data-stack-net']['IPAddress'] }}:8080/nifi-api/process-groups/{{ pg['content'] }}/templates/upload
+#     method: POST
+#     body_format: raw
+#     headers:
+#       "Content-Type": application/x-www-form-urlencoded
+#     src: Kafka_File_Pipe.xml
 
 
 - debug: var=pg['content']
